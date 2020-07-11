@@ -2,7 +2,7 @@ FROM node
 
 WORKDIR /srv/app
 COPY package.json ./
-COPY srv.js ./
 RUN npm install
+COPY * ./
 
 CMD node srv.js
