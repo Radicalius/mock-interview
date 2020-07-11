@@ -10,7 +10,7 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname+"/index.html")
 })
 
-file = "A dog has floopyy ears"
+file = "<insert code here>"
 
 io.on("connection", function(client) {
   client.on("get", function(data) {

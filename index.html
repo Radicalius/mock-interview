@@ -17,6 +17,29 @@
           color: #FFFFFF;
           background-color: #000000;
         }
+        #run {
+          width: 25%;
+          font-family: "Monospace";
+          font-size: 12;
+          color: #FFFFFF;
+          background-color: #000000;
+          border-left: 1px solid #FFFFFF;
+          padding-left: 10px;
+        }
+
+        .text {
+          font-family: "Monospace";
+          font-size: 12;
+          color: #FFFFFF;
+        }
+
+        #runbutton {
+          font-family: "Monospace";
+          font-size: 12;
+          color: #FFFFFF;
+          border: 1px #FFFFFF solid;
+          background-color: #000000;
+        }
     </style>
 
     <script src="/socket.io/socket.io.js"></script>
@@ -75,6 +98,15 @@
       <tr border=1>
         <td valign=top style="width: 30px" id=nums>1.</td>
         <td valign=top ><textarea id=code oninput="javascript:onTyped()"></textarea></td>
+        <td valign=top id=run>
+          <table width=100%>
+            <tr>
+              <td width=100% class=text>Output:</td>
+              <td><button type=button id=runbutton>Run</button></td>
+            </tr>
+          </table>
+          <hr>
+        </td>
       </tr>
 
     </table>
