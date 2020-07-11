@@ -46,27 +46,20 @@
 
     <script>
 
-      var lastlen = 0;
-
       var socket = io.connect();
       socket.on('connect', function(data) {
         socket.emit('get', '')
       });
       socket.on('file', function(data) {
         document.getElementById("code").value = data
-        lastlen = data.length
+        number()
       });
-      socket.on('update', function(data) {
-        console.log(data)
-        var code = document.getElementById("code")
-        if (!data.backspace) {
-          code.value += data.value
-        } else {
-          code.value = code.value.slice(0, -1)
-        }
-        lastlen = data.value
-        number();
-      });
+      socket.on('results', function(data) {
+          var results = document.getElementById('results')
+          var errors = document.getElementById('errors')
+          results.innerHTML = data.output.replace("\n","<br>")
+          errors.innerHTML = data.error.replace("\n", "<br>")
+      })
 
       function number() {
         var code = document.getElementById("code")
@@ -81,11 +74,11 @@
       function onTyped() {
         var code = document.getElementById("code")
         number();
-        socket.emit('edit', {
-          backspace: code.value.length < lastlen,
-          value: code.value[code.value.length-1]
-        })
-        lastlen = code.value.length
+        socket.emit('edit', code.value)
+      }
+
+      function onRun() {
+        socket.emit('run', '')
       }
 
     </script>
@@ -102,10 +95,16 @@
           <table width=100%>
             <tr>
               <td width=100% class=text>Output:</td>
-              <td><button type=button id=runbutton>Run</button></td>
+              <td><button type=button id=runbutton onclick="javascript:onRun()">Run</button></td>
             </tr>
           </table>
           <hr>
+          <div class=text id=results>
+
+          </div>
+          <div class=text style="color: #FF0000" id=errors>
+
+          </div>
         </td>
       </tr>
 
