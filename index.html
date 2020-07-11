@@ -19,9 +19,33 @@
         }
     </style>
 
+    <script src="/socket.io/socket.io.js"></script>
+
     <script>
 
-      function onTyped() {
+      var lastlen = 0;
+
+      var socket = io.connect();
+      socket.on('connect', function(data) {
+        socket.emit('get', '')
+      });
+      socket.on('file', function(data) {
+        document.getElementById("code").value = data
+        lastlen = data.length
+      });
+      socket.on('update', function(data) {
+        console.log(data)
+        var code = document.getElementById("code")
+        if (!data.backspace) {
+          code.value += data.value
+        } else {
+          code.value = code.value.slice(0, -1)
+        }
+        lastlen = data.value
+        number();
+      });
+
+      function number() {
         var code = document.getElementById("code")
         var numbering = document.getElementById("nums")
         var lines = code.value.split("\n").length
@@ -29,6 +53,16 @@
         for (i = 0; i < lines; i++) {
           numbering.innerHTML += "" + (i + 1) + ". <br/>"
         }
+      }
+
+      function onTyped() {
+        var code = document.getElementById("code")
+        number();
+        socket.emit('edit', {
+          backspace: code.value.length < lastlen,
+          value: code.value[code.value.length-1]
+        })
+        lastlen = code.value.length
       }
 
     </script>
