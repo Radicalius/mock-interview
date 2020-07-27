@@ -10,6 +10,9 @@
           border: none;
           color: #FFFFFF;
           background-color: #000000;
+          -moz-tab-size : 4;
+          -o-tab-size : 4;
+          tab-size : 4;
         }
         #nums {
           font-family: "Monospace";
@@ -62,6 +65,7 @@
         document.getElementById("code").value = data
         number()
       });
+
       socket.on('results', function(data) {
           var results = document.getElementById('results')
           var errors = document.getElementById('errors')
@@ -85,6 +89,18 @@
         socket.emit('edit', code.value)
       }
 
+      window.onload = function() {
+        var textarea = document.getElementById("code")
+        alert(textarea)
+        textarea.onkeydown = function(event) {
+          if (event.keyCode == 9) {
+            textarea.value = textarea.value.substring(0, textarea.selectionStart) + "\t" + textarea.value.substring(textarea.selectionEnd, textarea.value.length);
+            return false;
+          }
+          return true;
+        }
+      }
+
       function onRun() {
         socket.emit('run', '')
       }
@@ -98,7 +114,7 @@
 
       <tr border=1>
         <td valign=top style="width: 30px" id=nums>1.</td>
-        <td valign=top ><textarea id=code oninput="javascript:onTyped()"></textarea></td>
+        <td valign=top ><textarea id=code oninput="javascript:onTyped()" onkeydown="javascript:allowTabs"></textarea></td>
         <td valign=top id=run>
           <table width=100%>
             <tr>
