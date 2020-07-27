@@ -16,11 +16,11 @@ app.get("/", (req, res) => {
 
 io.on("connection", function(client) {
   client.on("get", function(data) {
-    client.emit("file", file)
+    client.emit("file", {data: file, cursor: -1})
   })
 
   client.on("edit", function(data) {
-    file = data
+    file = data.data
     client.broadcast.emit("file", data)
   })
 

@@ -62,7 +62,14 @@
         socket.emit('get', '')
       });
       socket.on('file', function(data) {
-        document.getElementById("code").value = data
+        var textarea = document.getElementById("code")
+        var old = textarea.value
+        var currentPos = textarea.selectionEnd
+        textarea.value = data.data
+        if (data.cursor <= currentPos) {
+            currentPos = currentPos + textarea.value.length - old.length
+        }
+        textarea.setSelectionRange(currentPos, currentPos)
         number()
       });
 
@@ -86,12 +93,11 @@
       function onTyped() {
         var code = document.getElementById("code")
         number();
-        socket.emit('edit', code.value)
+        socket.emit('edit', {data: code.value, cursor: code.selectionStart})
       }
 
       window.onload = function() {
         var textarea = document.getElementById("code")
-        alert(textarea)
         textarea.onkeydown = function(event) {
           if (event.keyCode == 9) {
             textarea.value = textarea.value.substring(0, textarea.selectionStart) + "\t" + textarea.value.substring(textarea.selectionEnd, textarea.value.length);
