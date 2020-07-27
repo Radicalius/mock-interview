@@ -40,6 +40,14 @@
           border: 1px #FFFFFF solid;
           background-color: #000000;
         }
+
+        #lang {
+          font-family: "Monospace";
+          font-size: 12;
+          color: #FFFFFF;
+          border: 1px #FFFFFF solid;
+          background-color: #000000;
+        }
     </style>
 
     <script src="/socket.io/socket.io.js"></script>
@@ -57,8 +65,8 @@
       socket.on('results', function(data) {
           var results = document.getElementById('results')
           var errors = document.getElementById('errors')
-          results.innerHTML = data.output.replace("\n","<br>")
-          errors.innerHTML = data.error.replace("\n", "<br>")
+          results.innerHTML = data.output.replaceAll("\n","<br>")
+          errors.innerHTML = data.error.replaceAll("\n", "<br>")
       })
 
       function number() {
@@ -95,6 +103,9 @@
           <table width=100%>
             <tr>
               <td width=100% class=text>Output:</td>
+              <td><select id=lang>
+                <option>Python</option>
+              </select></td>
               <td><button type=button id=runbutton onclick="javascript:onRun()">Run</button></td>
             </tr>
           </table>
