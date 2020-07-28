@@ -124,8 +124,8 @@
       socket.on('results', function(data) {
           var results = document.getElementById('results')
           var errors = document.getElementById('errors')
-          results.innerHTML = data.output.replaceAll("\n","<br>")
-          errors.innerHTML = data.error.replaceAll("\n", "<br>")
+          results.innerHTML = data.output.replace("/\n/g","<br>")
+          errors.innerHTML = data.error.replace("/\n/g", "<br>")
       })
 
       function number() {
@@ -185,12 +185,12 @@
             </tr>
           </table>
           <hr>
-          <div class=text id=results>
+          <pre class=text id=results>
 
-          </div>
-          <div class=text style="color: #FF0000" id=errors>
+          </pre>
+          <pre class=text style="color: #FF0000" id=errors>
 
-          </div>
+          </pre>
         </td>
       </tr>
 
